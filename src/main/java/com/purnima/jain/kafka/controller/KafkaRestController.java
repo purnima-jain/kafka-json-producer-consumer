@@ -21,6 +21,7 @@ public class KafkaRestController {
 	private KafkaProducerService kafkaProducerService;
 	
 	@PostMapping(value = "kafka/postMessage", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	// Sample Request: { "userId": 323, "firstName": "MMMMM", "lastName": "NNNN" }
 	public ResponseDto postMessage(@RequestBody UserRequestDto userRequestDto) throws Exception {
 		logger.info("Entering KafkaRestController.postMessage() with userRequestDto :: {}", userRequestDto);
 		
