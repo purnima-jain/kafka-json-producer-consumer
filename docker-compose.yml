@@ -1,0 +1,47 @@
+version: '3.5'
+
+networks:
+  kafka_network:
+    name: kafka_network
+
+services:
+  zookeeper_server:
+    image: confluentinc/cp-zookeeper:7.0.1
+    container_name: zookeeper_server
+    hostname: zookeeper_server
+    networks:
+      - kafka_network
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+
+  kafka_server:
+    image: confluentinc/cp-kafka:7.0.1
+    container_name: kafka_server
+    hostname: kafka_server
+    networks:
+      - kafka_network
+    depends_on:
+      - zookeeper_server
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper_server:2181
+      # Ref: https://www.youtube.com/watch?v=L--VuzFiYrM
+      # INTERNAL -- Kafka-Broker & Kafka-Client both running in Docker within the same Docker network, in just different containers
+      #          > docker run -it --rm --name kafka_client_producer --network kafka_network confluentinc/cp-kafka:7.0.1 /bin/kafka-console-producer --bootstrap-server kafka_server:29092 --topic test_topic
+      #          > docker run -it --rm --name kafka_client_consumer --network kafka_network confluentinc/cp-kafka:7.0.1 /bin/kafka-console-consumer --bootstrap-server kafka_server:29092 --topic test_topic
+      # EXTERNAL_SAME_HOST -- Kafka-Broker running in Docker and Kafka-Client on local machine
+      #          > kafka-console-producer --bootstrap-server localhost:9092 --topic test_topic_2
+      #          > kafka-console-consumer --bootstrap-server localhost:9092 --topic test_topic_2
+      # EXTERNAL_DIFFERENT_HOST -- Kafka-Broker running on external server ex. cloud and 157.245.80.232 is it's IP Address (better use DNS Names instead of IP)
+      #          > kafka-console-producer --bootstrap-server 157.245.80.232:29093 --topic test_topic_3
+      #          > kafka-console-consumer --bootstrap-server 157.245.80.232:29093 --topic test_topic_3
+      KAFKA_LISTENERS: EXTERNAL_SAME_HOST://:9092,EXTERNAL_DIFFERENT_HOST://:29093,INTERNAL://:29092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka_server:29092,EXTERNAL_SAME_HOST://localhost:9092,EXTERNAL_DIFFERENT_HOST://157.245.80.232:29093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL_SAME_HOST:PLAINTEXT,EXTERNAL_DIFFERENT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+      - "29093:29093"

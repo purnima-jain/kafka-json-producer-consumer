@@ -23,7 +23,7 @@ public class KafkaConsumerConfig {
 	@Value("${spring.kafka.bootstrap-servers:localhost:9092}")
 	private String bootstrapServers;
 	
-	@Value("${spring.kafka.consumer.group-id:myGroupFourthApp}")
+	@Value("${spring.kafka.consumer.group-id:my_app_group}")
 	private String groupId;
 
 	@Bean

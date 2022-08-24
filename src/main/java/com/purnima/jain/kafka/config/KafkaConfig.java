@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class KafkaConfig {
 	
-	@Value("${spring.kafka.topic-name:fifth_topic}")
+	@Value("${spring.kafka.topic-name:my_topic}")
 	private String topicName;
 	
 	@Bean
