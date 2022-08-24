@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "71388e7e-162b-42cb-bf67-06223caef31e",
+		"name": "kafka-producer-consumer",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2696806"
+	},
+	"item": [
+		{
+			"name": "kafka-producer-consumer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"customerId\": \"customer_id_123\",\r\n    \"creditCardNumber\": \"1111-2222-3333-4444\",\r\n    \"itemPurchased\": \"Mobile\",\r\n    \"department\": \"dept_retail\",\r\n    \"employeeId\": \"employee_id_222\",\r\n    \"quantity\": 1,\r\n    \"price\": 22.5,\r\n    \"purchaseDate\": \"Aug 13, 2020, 2:13:00 PM\",\r\n    \"zipCode\": \"zipcode_666666\",\r\n    \"storeId\": \"store_id_333\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/kafka/postMessage",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"kafka",
+						"postMessage"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
